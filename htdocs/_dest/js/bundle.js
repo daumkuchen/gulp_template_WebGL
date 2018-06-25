@@ -130,9 +130,9 @@ var Mesh = require('./Mesh').default;
 var Post = require('./Post').default;
 var OrbitControls = require('./_lib/OrbitControls.js')(THREE);
 
-var Minion = function () {
-  function Minion() {
-    _classCallCheck(this, Minion);
+var Sample = function () {
+  function Sample() {
+    _classCallCheck(this, Sample);
 
     this.ua = navigator.userAgent.toLowerCase();
     this.winWidth = window.innerWidth;
@@ -166,7 +166,7 @@ var Minion = function () {
     this.count = null;
   }
 
-  _createClass(Minion, [{
+  _createClass(Sample, [{
     key: 'onLoad',
     value: function onLoad() {
 
@@ -309,10 +309,10 @@ var Minion = function () {
     }
   }]);
 
-  return Minion;
+  return Sample;
 }();
 
-exports.default = Minion;
+exports.default = Sample;
 
 },{"./Mesh":1,"./Post":2,"./_lib/OrbitControls.js":4,"three/build/three.js":11}],4:[function(require,module,exports){
 'use strict';
@@ -1273,7 +1273,6 @@ var Sample = require('./Sample').default;
 
   // ===== init
   var init = function init() {
-    sample = new Sample();
     sample.init();
   };
 

@@ -33,8 +33,8 @@ gulp.task('js', () => {
     entries: ['./_src/_js/app.js'],
     transform: [
       ['babelify', {
-        presets: ['es2015', 'stage-3']
-        // presets: ['es2015']
+        // presets: ['es2015', 'stage-3']
+        presets: ['es2015']
       }],
       ['stringify', {
         appliesTo: {

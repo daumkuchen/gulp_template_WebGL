@@ -3,7 +3,7 @@ const Mesh = require('./Mesh').default;
 const Post = require('./Post').default;
 const OrbitControls = require('./_lib/OrbitControls.js')(THREE);
 
-export default class Minion {
+export default class Sample {
   constructor() {
 
     this.ua = navigator.userAgent.toLowerCase();

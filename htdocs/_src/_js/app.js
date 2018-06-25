@@ -8,7 +8,6 @@ const Sample = require('./Sample').default;
 
   // ===== init
   let init = () => {
-    sample = new Sample;
     sample.init();
   }
 
