@@ -1,4 +1,7 @@
 const THREE = require('three/build/three.js');
+const dat = require('dat.gui');
+const Stats = require('stats-js');
+
 const Mesh = require('./Mesh').default;
 const Post = require('./Post').default;
 const OrbitControls = require('./_lib/OrbitControls.js')(THREE);
@@ -24,6 +27,9 @@ export default class Sample {
     this.directional;
     this.ambient;
 
+    this.gui;
+    this.stats;
+
     this.targetDOM = document.getElementById('canvas');
     this.parameterCamera = {
       fovy: 60,
@@ -32,7 +38,7 @@ export default class Sample {
       far: 5000.0,
       x: 0.0,
       y: 0.0,
-      z: 5.0,
+      z: 4.0,
       lookAt: new THREE.Vector3(0.0, 0.0, 0.0)
     };
     this.count = null;
@@ -72,6 +78,9 @@ export default class Sample {
     this.createMesh();
     this.createLight();
     this.createPost();
+    this.datGUI();
+    this.statsFn();
+
     this.loop();
     this.animation();
 
@@ -112,10 +121,12 @@ export default class Sample {
     this.post.uniforms.mouse.value.y = e.pageY;
   }
   loop() {
+    this.stats.begin();
+    this.stats.end();
     this.count++;
     this.renderer.setClearColor(new THREE.Color(0xffffff));
     this.renderer.render(this.scene, this.camera, this.rendererPost);
-    // this.renderer.setClearColor(new THREE.Color(0xffffff));
+    this.renderer.setClearColor(new THREE.Color(0xffffff));
     this.renderer.render(this.scenePost, this.cameraPost);
     requestAnimationFrame(this.loop.bind(this));
   }
@@ -129,6 +140,7 @@ export default class Sample {
   createMesh() {
     this.mesh = new Mesh;
     this.mesh.createObject();
+    this.mesh.object.position.z = -1.0;
     this.scene.add(this.mesh.object);
   }
   createLight() {
@@ -166,6 +178,41 @@ export default class Sample {
     this.rendererPost.setSize(this.winWidth * window.devicePixelRatio || 1, this.winHeight * window.devicePixelRatio || 1);
     this.post = new Post(this.rendererPost.texture);
     this.scenePost.add(this.post.object);
+  }
+  datGUI () {
+
+    this.gui = new dat.GUI();
+
+    // guiPostColor
+    const postColor = new function() {
+      this.r = 1.0;
+      this.g = 1.0;
+      this.b = 1.0;
+    };
+
+    const guiPostColor = this.gui.addFolder('postColor');
+    guiPostColor.add(postColor, 'r', 0.0, 1.0).onChange((value) => {
+      this.post.uniforms.colorR.value = value;
+    });
+
+    guiPostColor.add(postColor, 'g', 0.0, 1.0).onChange((value) => {
+      this.post.uniforms.colorG.value = value;
+    });
+
+    guiPostColor.add(postColor, 'b', 0.0, 1.0).onChange((value) => {
+      this.post.uniforms.colorB.value = value;
+    });
+
+    guiPostColor.open();
+
+  }
+  statsFn() {
+    this.stats = new Stats();
+    this.stats.setMode(0);
+    this.stats.domElement.style.position = 'absolute';
+    this.stats.domElement.style.left = '0px';
+    this.stats.domElement.style.top = '0px';
+    document.body.appendChild(this.stats.domElement);
   }
   init() {
     this.onLoad();

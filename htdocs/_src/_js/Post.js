@@ -20,6 +20,18 @@ export default class Post {
       texture: {
         type: 't',
         value: texture
+      },
+      colorR: {
+        type: 'f',
+        value: 1.0
+      },
+      colorG: {
+        type: 'f',
+        value: 1.0
+      },
+      colorB: {
+        type: 'f',
+        value: 1.0
       }
     };
     this.object = this.createObject(texture);
