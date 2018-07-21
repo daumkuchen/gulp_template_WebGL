@@ -1,14 +1,14 @@
-const TweenMax = require('gsap');
-const Sample = require('./Sample').default;
+// const TweenMax = require('gsap');
+const WebGL = require('./WebGL').default;
 
 (() => {
 
   // ===== var
-  let sample = new Sample;
+  let webgl = new WebGL;
 
   // ===== init
   let init = () => {
-    sample.init();
+    webgl.init();
   }
 
   init();

@@ -43,7 +43,7 @@ export default class Sample {
     };
     this.count = null;
   }
-  onLoad() {
+  setup() {
 
     this.targetDOM.width *= devicePixelRatio;
     this.targetDOM.height *= devicePixelRatio;
@@ -79,17 +79,15 @@ export default class Sample {
     this.createLight();
     this.createPost();
     this.datGUI();
-    this.statsFn();
-
-    this.loop();
-    this.animation();
+    this.stats();
+    this.update();
 
     this.mesh.uniforms.resolution.value.x = this.renderer.domElement.width;
     this.mesh.uniforms.resolution.value.y = this.renderer.domElement.height;
     this.post.uniforms.resolution.value.x = this.renderer.domElement.width;
     this.post.uniforms.resolution.value.y = this.renderer.domElement.height;
   }
-  onResize() {
+  resize() {
     this.winWidth = window.innerWidth;
     this.winHeight = window.innerHeight;
     this.camera.aspect = this.winWidth / this.winHeight;
@@ -106,7 +104,7 @@ export default class Sample {
     this.post.uniforms.resolution.value.x = this.renderer.domElement.width;
     this.post.uniforms.resolution.value.y = this.renderer.domElement.height;
   }
-  onMousemove(e) {
+  mousemove(e) {
     let x = e.clientX * 2.0 - this.winWidth;
     let y = e.clientY * 2.0 - this.winHeight;
     x /= this.winWidth;
@@ -120,22 +118,19 @@ export default class Sample {
     this.post.uniforms.mouse.value.x = e.pageX;
     this.post.uniforms.mouse.value.y = e.pageY;
   }
-  loop() {
+  update() {
     this.stats.begin();
     this.stats.end();
     this.count++;
-    this.renderer.setClearColor(new THREE.Color(0xffffff));
-    this.renderer.render(this.scene, this.camera, this.rendererPost);
-    this.renderer.setClearColor(new THREE.Color(0xffffff));
-    this.renderer.render(this.scenePost, this.cameraPost);
-    requestAnimationFrame(this.loop.bind(this));
-  }
-  animation() {
 
     this.mesh.uniforms.time.value += 0.05;
     this.post.uniforms.time.value += 0.05;
 
-    requestAnimationFrame(this.animation.bind(this));
+    this.renderer.setClearColor(new THREE.Color(0xffffff));
+    this.renderer.render(this.scene, this.camera, this.rendererPost);
+    this.renderer.setClearColor(new THREE.Color(0xffffff));
+    this.renderer.render(this.scenePost, this.cameraPost);
+    requestAnimationFrame(this.update.bind(this));
   }
   createMesh() {
     this.mesh = new Mesh;
@@ -183,7 +178,6 @@ export default class Sample {
 
     this.gui = new dat.GUI();
 
-    // guiPostColor
     const postColor = new function() {
       this.r = 1.0;
       this.g = 1.0;
@@ -206,7 +200,7 @@ export default class Sample {
     guiPostColor.open();
 
   }
-  statsFn() {
+  stats() {
     this.stats = new Stats();
     this.stats.setMode(0);
     this.stats.domElement.style.position = 'absolute';
@@ -215,8 +209,8 @@ export default class Sample {
     document.body.appendChild(this.stats.domElement);
   }
   init() {
-    this.onLoad();
-    window.addEventListener('resize', this.onResize.bind(this), false);
-    window.addEventListener('mousemove', this.onMousemove.bind(this), false);
+    this.setup();
+    window.addEventListener('resize', this.resize.bind(this), false);
+    window.addEventListener('mousemove', this.mousemove.bind(this), false);
   }
 }
