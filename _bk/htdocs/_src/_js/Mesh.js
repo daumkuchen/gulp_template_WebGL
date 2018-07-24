@@ -1,6 +1,6 @@
-import * as THREE from "three";
-import vert from './../_shader/mesh.vert';
-import frag from './../_shader/mesh.frag';
+const THREE = require('three/build/three.js');
+const vert = require('./../_shader/mesh.vert');
+const frag = require('./../_shader/mesh.frag');
 
 export default class Mesh {
   constructor() {

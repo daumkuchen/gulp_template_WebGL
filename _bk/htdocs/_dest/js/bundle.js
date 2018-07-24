@@ -7,23 +7,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _three = require('three');
-
-var THREE = _interopRequireWildcard(_three);
-
-var _mesh = require('./../_shader/mesh.vert');
-
-var _mesh2 = _interopRequireDefault(_mesh);
-
-var _mesh3 = require('./../_shader/mesh.frag');
-
-var _mesh4 = _interopRequireDefault(_mesh3);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var THREE = require('three/build/three.js');
+var vert = require('./../_shader/mesh.vert');
+var frag = require('./../_shader/mesh.frag');
 
 var Mesh = function () {
   function Mesh() {
@@ -54,8 +42,8 @@ var Mesh = function () {
       geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
       var material = new THREE.ShaderMaterial({
         uniforms: this.uniforms,
-        vertexShader: _mesh2.default,
-        fragmentShader: _mesh4.default,
+        vertexShader: vert,
+        fragmentShader: frag,
         side: THREE.DoubleSide
       });
       return new THREE.Mesh(geometry, material);
@@ -67,7 +55,7 @@ var Mesh = function () {
 
 exports.default = Mesh;
 
-},{"./../_shader/mesh.frag":6,"./../_shader/mesh.vert":7,"three":12}],2:[function(require,module,exports){
+},{"./../_shader/mesh.frag":6,"./../_shader/mesh.vert":7,"three/build/three.js":12}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -76,23 +64,12 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _three = require('three');
-
-var THREE = _interopRequireWildcard(_three);
-
-var _post = require('./../_shader/post.vert');
-
-var _post2 = _interopRequireDefault(_post);
-
-var _post3 = require('./../_shader/post.frag');
-
-var _post4 = _interopRequireDefault(_post3);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var THREE = require('three/build/three.js');
+// const THREE = { PlaneBufferGeometry, RawShaderMaterial, Mesh, Math as _Math } from 'three’;
+var vert = require('./../_shader/post.vert');
+var frag = require('./../_shader/post.frag');
 
 var Post = function () {
   function Post(texture) {
@@ -137,8 +114,8 @@ var Post = function () {
       var geometry = new THREE.PlaneBufferGeometry(2, 2);
       var material = new THREE.ShaderMaterial({
         uniforms: this.uniforms,
-        vertexShader: _post2.default,
-        fragmentShader: _post4.default,
+        vertexShader: vert,
+        fragmentShader: frag,
         transparent: true
       });
       return new THREE.Mesh(geometry, material);
@@ -150,7 +127,7 @@ var Post = function () {
 
 exports.default = Post;
 
-},{"./../_shader/post.frag":8,"./../_shader/post.vert":9,"three":12}],3:[function(require,module,exports){
+},{"./../_shader/post.frag":8,"./../_shader/post.vert":9,"three/build/three.js":12}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -158,35 +135,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-// import { PerspectiveCamera, Scene, WebGLRenderer } from 'three';
-
-
-var _three = require('three');
-
-var THREE = _interopRequireWildcard(_three);
-
-var _dat = require('dat.gui');
-
-var _dat2 = _interopRequireDefault(_dat);
-
-var _statsJs = require('stats-js');
-
-var _statsJs2 = _interopRequireDefault(_statsJs);
-
-var _Mesh = require('./Mesh');
-
-var _Mesh2 = _interopRequireDefault(_Mesh);
-
-var _Post = require('./Post');
-
-var _Post2 = _interopRequireDefault(_Post);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var THREE = require('three/build/three.js');
+var dat = require('dat.gui');
+var Stats = require('stats-js');
+
+var Mesh = require('./Mesh').default;
+var Post = require('./Post').default;
 var OrbitControls = require('./_lib/OrbitControls.js')(THREE);
 
 var Sample = function () {
@@ -238,6 +195,7 @@ var Sample = function () {
 
       // ===== scene
       this.scene = new THREE.Scene();
+      this.scene.fog = new THREE.Fog(0x000000, 0.01, 1000);
 
       // ===== camera
       this.camera = new THREE.PerspectiveCamera(this.parameterCamera.fovy, this.parameterCamera.aspect, this.parameterCamera.near, this.parameterCamera.far);
@@ -251,13 +209,13 @@ var Sample = function () {
       });
       this.renderer.setPixelRatio(window.devicePixelRatio || 1);
       this.renderer.setSize(this.winWidth, this.winHeight);
-      // this.renderer.shadowMap.enabled = true;
-      // this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      this.renderer.shadowMap.enabled = true;
+      this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       this.targetDOM.appendChild(this.renderer.domElement);
       this.controls = new THREE.OrbitControls(this.camera);
 
       this.createMesh();
-      // this.createLight();
+      this.createLight();
       this.createPost();
       this.datGUI();
       this.stats();
@@ -322,24 +280,25 @@ var Sample = function () {
   }, {
     key: 'createMesh',
     value: function createMesh() {
-      this.mesh = new _Mesh2.default();
+      this.mesh = new Mesh();
       this.mesh.createObject();
       this.mesh.object.position.z = -1.0;
       this.scene.add(this.mesh.object);
     }
-    // createLight() {
-    //   this.ambient = new THREE.AmbientLight(0xffffff, 0.5);
-    //   this.scene.add(this.ambient);
-    //   this.directional = new THREE.DirectionalLight(0xffffff, 0.8);
-    //   this.directional.position.set(10.0, 10.0, 10.0);
-    //   this.directional.castShadow = true;
-    //   this.directional.shadow.mapSize.width = 1024;
-    //   this.directional.shadow.mapSize.height = 1024;
-    //   this.directional.shadow.camera.near = 0.01;
-    //   this.directional.shadow.camera.far = 500;
-    //   this.scene.add(this.directional);
-    // }
-
+  }, {
+    key: 'createLight',
+    value: function createLight() {
+      this.ambient = new THREE.AmbientLight(0xffffff, 0.5);
+      this.scene.add(this.ambient);
+      this.directional = new THREE.DirectionalLight(0xffffff, 0.8);
+      this.directional.position.set(10.0, 10.0, 10.0);
+      this.directional.castShadow = true;
+      this.directional.shadow.mapSize.width = 1024;
+      this.directional.shadow.mapSize.height = 1024;
+      this.directional.shadow.camera.near = 0.01;
+      this.directional.shadow.camera.far = 500;
+      this.scene.add(this.directional);
+    }
   }, {
     key: 'createPost',
     value: function createPost() {
@@ -356,7 +315,7 @@ var Sample = function () {
         wrapT: THREE.ClampToEdgeWrapping
       });
       this.rendererPost.setSize(this.winWidth * window.devicePixelRatio || 1, this.winHeight * window.devicePixelRatio || 1);
-      this.post = new _Post2.default(this.rendererPost.texture);
+      this.post = new Post(this.rendererPost.texture);
       this.scenePost.add(this.post.object);
     }
   }, {
@@ -364,7 +323,7 @@ var Sample = function () {
     value: function datGUI() {
       var _this = this;
 
-      this.gui = new _dat2.default.GUI();
+      this.gui = new dat.GUI();
 
       var postColor = new function () {
         this.r = 1.0;
@@ -390,7 +349,7 @@ var Sample = function () {
   }, {
     key: 'stats',
     value: function stats() {
-      this.stats = new _statsJs2.default();
+      this.stats = new Stats();
       this.stats.setMode(0);
       this.stats.domElement.style.position = 'absolute';
       this.stats.domElement.style.left = '0px';
@@ -411,7 +370,7 @@ var Sample = function () {
 
 exports.default = Sample;
 
-},{"./Mesh":1,"./Post":2,"./_lib/OrbitControls.js":4,"dat.gui":10,"stats-js":11,"three":12}],4:[function(require,module,exports){
+},{"./Mesh":1,"./Post":2,"./_lib/OrbitControls.js":4,"dat.gui":10,"stats-js":11,"three/build/three.js":12}],4:[function(require,module,exports){
 'use strict';
 
 function defaultOnError(err) {

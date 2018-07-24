@@ -1,11 +1,9 @@
-import * as THREE from "three";
-// import { PerspectiveCamera, Scene, WebGLRenderer } from 'three';
-import dat from 'dat.gui';
-import Stats from 'stats-js';
+const THREE = require('three/build/three.js');
+const dat = require('dat.gui');
+const Stats = require('stats-js');
 
-import Mesh from './Mesh';
-import Post from './Post';
-
+const Mesh = require('./Mesh').default;
+const Post = require('./Post').default;
 const OrbitControls = require('./_lib/OrbitControls.js')(THREE);
 
 export default class Sample {
@@ -53,6 +51,7 @@ export default class Sample {
 
     // ===== scene
     this.scene = new THREE.Scene();
+    this.scene.fog = new THREE.Fog(0x000000, 0.01, 1000);
 
     // ===== camera
     this.camera = new THREE.PerspectiveCamera(
@@ -71,13 +70,13 @@ export default class Sample {
     });
     this.renderer.setPixelRatio(window.devicePixelRatio || 1);
     this.renderer.setSize(this.winWidth, this.winHeight);
-    // this.renderer.shadowMap.enabled = true;
-    // this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.targetDOM.appendChild(this.renderer.domElement);
     this.controls = new THREE.OrbitControls(this.camera);
 
     this.createMesh();
-    // this.createLight();
+    this.createLight();
     this.createPost();
     this.datGUI();
     this.stats();
@@ -139,18 +138,18 @@ export default class Sample {
     this.mesh.object.position.z = -1.0;
     this.scene.add(this.mesh.object);
   }
-  // createLight() {
-  //   this.ambient = new THREE.AmbientLight(0xffffff, 0.5);
-  //   this.scene.add(this.ambient);
-  //   this.directional = new THREE.DirectionalLight(0xffffff, 0.8);
-  //   this.directional.position.set(10.0, 10.0, 10.0);
-  //   this.directional.castShadow = true;
-  //   this.directional.shadow.mapSize.width = 1024;
-  //   this.directional.shadow.mapSize.height = 1024;
-  //   this.directional.shadow.camera.near = 0.01;
-  //   this.directional.shadow.camera.far = 500;
-  //   this.scene.add(this.directional);
-  // }
+  createLight() {
+    this.ambient = new THREE.AmbientLight(0xffffff, 0.5);
+    this.scene.add(this.ambient);
+    this.directional = new THREE.DirectionalLight(0xffffff, 0.8);
+    this.directional.position.set(10.0, 10.0, 10.0);
+    this.directional.castShadow = true;
+    this.directional.shadow.mapSize.width = 1024;
+    this.directional.shadow.mapSize.height = 1024;
+    this.directional.shadow.camera.near = 0.01;
+    this.directional.shadow.camera.far = 500;
+    this.scene.add(this.directional);
+  }
   createPost() {
     this.scenePost = new THREE.Scene();
     this.cameraPost = new THREE.PerspectiveCamera(

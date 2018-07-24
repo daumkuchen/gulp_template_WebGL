@@ -1,6 +1,7 @@
-import * as THREE from "three";
-import vert from './../_shader/post.vert';
-import frag from './../_shader/post.frag';
+const THREE = require('three/build/three.js');
+// const THREE = { PlaneBufferGeometry, RawShaderMaterial, Mesh, Math as _Math } from 'three’;
+const vert = require('./../_shader/post.vert');
+const frag = require('./../_shader/post.frag');
 
 export default class Post {
   constructor(texture) {
