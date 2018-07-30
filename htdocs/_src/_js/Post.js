@@ -1,4 +1,4 @@
-import * as THREE from "three";
+import * as THREE from 'three';
 import vert from './../_shader/post.vert';
 import frag from './../_shader/post.frag';
 

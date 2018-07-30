@@ -1,5 +1,4 @@
-import * as THREE from "three";
-// import { PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import * as THREE from 'three';
 import dat from 'dat.gui';
 import Stats from 'stats-js';
 

@@ -158,8 +158,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-// import { PerspectiveCamera, Scene, WebGLRenderer } from 'three';
-
 
 var _three = require('three');
 
@@ -1360,13 +1358,16 @@ module.exports = function (THREE) {
 },{}],5:[function(require,module,exports){
 'use strict';
 
-// const TweenMax = require('gsap');
-var WebGL = require('./WebGL').default;
+var _WebGL = require('./WebGL');
+
+var _WebGL2 = _interopRequireDefault(_WebGL);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 (function () {
 
   // ===== var
-  var webgl = new WebGL();
+  var webgl = new _WebGL2.default();
 
   // ===== init
   var init = function init() {
@@ -1374,7 +1375,7 @@ var WebGL = require('./WebGL').default;
   };
 
   init();
-})();
+})(); // const TweenMax = require('gsap');
 
 },{"./WebGL":3}],6:[function(require,module,exports){
 module.exports = "#ifdef GL_ES\nprecision mediump float;\n#endif\n\nuniform vec2 resolution;\nuniform vec2 mouse;\nuniform float time;\n\nvoid main(void) {\n  vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);\n  vec3 color = 0.5 + 0.5 * cos(time + p.xyx + vec3(0, 2, 4));\n  gl_FragColor = vec4(color, 1.0);\n}\n";

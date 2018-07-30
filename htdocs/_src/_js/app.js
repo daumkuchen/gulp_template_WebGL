@@ -1,5 +1,5 @@
 // const TweenMax = require('gsap');
-const WebGL = require('./WebGL').default;
+import WebGL from './WebGL';
 
 (() => {
 

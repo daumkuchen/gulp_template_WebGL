@@ -1,4 +1,4 @@
-import * as THREE from "three";
+import * as THREE from 'three';
 import vert from './../_shader/mesh.vert';
 import frag from './../_shader/mesh.frag';
 
