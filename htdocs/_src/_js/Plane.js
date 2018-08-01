@@ -1,8 +1,9 @@
 import * as THREE from 'three';
+
 import vert from './../_shader/mesh.vert';
 import frag from './../_shader/mesh.frag';
 
-export default class Mesh {
+export default class Plane {
   constructor() {
     this.uniforms = {
       resolution: {
@@ -18,27 +19,29 @@ export default class Mesh {
         value: 1.0
       }
     };
-    this.object = this.createObject();
+    this.geometry = null;
+    this.material = null;
+    this.mesh = null;
   }
-  createObject() {
-    const geometry = new THREE.BufferGeometry();
-    const vertices = new Float32Array( [
-      -1.0, -1.0,  1.0,
-       1.0, -1.0,  1.0,
-       1.0,  1.0,  1.0,
-       1.0,  1.0,  1.0,
-      -1.0,  1.0,  1.0,
-      -1.0, -1.0,  1.0
+  setup() {
+    this.geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array([
+      -1., -1.,  1.,
+       1., -1.,  1.,
+       1.,  1.,  1.,
+       1.,  1.,  1.,
+      -1.,  1.,  1.,
+      -1., -1.,  1.
     ]);
-    geometry.addAttribute('position',
-      new THREE.BufferAttribute(vertices, 3)
+    this.geometry.addAttribute('position',
+      new THREE.BufferAttribute(positions, 3)
     );
-    const material = new THREE.ShaderMaterial({
+    this.material = new THREE.RawShaderMaterial({
       uniforms: this.uniforms,
       vertexShader: vert,
       fragmentShader: frag,
       side: THREE.DoubleSide
     });
-    return new THREE.Mesh(geometry, material);
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
   }
 }

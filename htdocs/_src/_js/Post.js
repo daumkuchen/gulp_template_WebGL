@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+
 import vert from './../_shader/post.vert';
 import frag from './../_shader/post.frag';
 
@@ -34,16 +35,17 @@ export default class Post {
         value: 1.0
       }
     };
-    this.object = this.createObject(texture);
+    this.geometry = null;
+    this.material = null;
+    this.mesh = null;
   }
-  createObject() {
-    const geometry = new THREE.PlaneBufferGeometry(2, 2);
-    const material = new THREE.ShaderMaterial({
+  setup() {
+    this.geometry = new THREE.PlaneBufferGeometry(2, 2);
+    this.material = new THREE.RawShaderMaterial({
       uniforms: this.uniforms,
       vertexShader: vert,
-      fragmentShader: frag,
-      transparent: true
+      fragmentShader: frag
     });
-    return new THREE.Mesh(geometry, material);
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
   }
 }

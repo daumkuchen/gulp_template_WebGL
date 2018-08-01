@@ -1,11 +1,11 @@
 import * as THREE from 'three';
-import dat from 'dat.gui';
+
 import Stats from 'stats-js';
+import Dat from 'dat.gui';
+import OrbitControls from './_lib/OrbitControls';
 
-import Mesh from './Mesh';
+import Plane from './Plane';
 import Post from './Post';
-
-const OrbitControls = require('./_lib/OrbitControls.js')(THREE);
 
 export default class Sample {
   constructor() {
@@ -24,7 +24,7 @@ export default class Sample {
     this.scenePost;
     this.cameraPost;
 
-    this.mesh;
+    this.plane;
     this.directional;
     this.ambient;
 
@@ -45,15 +45,10 @@ export default class Sample {
     this.count = null;
   }
   setup() {
-
     this.targetDOM.width *= devicePixelRatio;
     this.targetDOM.height *= devicePixelRatio;
     this.targetDOM.style.width = String(this.targetDOM.width / devicePixelRatio) + 'px';
-
-    // ===== scene
     this.scene = new THREE.Scene();
-
-    // ===== camera
     this.camera = new THREE.PerspectiveCamera(
       this.parameterCamera.fovy,
       this.parameterCamera.aspect,
@@ -75,17 +70,20 @@ export default class Sample {
     this.targetDOM.appendChild(this.renderer.domElement);
     this.controls = new THREE.OrbitControls(this.camera);
 
-    this.createMesh();
-    // this.createLight();
+    this.createPlane();
     this.createPost();
     this.datGUI();
     this.stats();
     this.update();
 
-    this.mesh.uniforms.resolution.value.x = this.renderer.domElement.width;
-    this.mesh.uniforms.resolution.value.y = this.renderer.domElement.height;
+    // **
+    // uniforms.resolution
+    // **
+    this.plane.uniforms.resolution.value.x = this.renderer.domElement.width;
+    this.plane.uniforms.resolution.value.y = this.renderer.domElement.height;
     this.post.uniforms.resolution.value.x = this.renderer.domElement.width;
     this.post.uniforms.resolution.value.y = this.renderer.domElement.height;
+
   }
   resize() {
     this.winWidth = window.innerWidth;
@@ -99,10 +97,14 @@ export default class Sample {
     this.rendererPost.setSize(this.winWidth, this.winHeight);
     this.rendererPost.setSize(this.winWidth * window.devicePixelRatio || 1, this.winHeight * window.devicePixelRatio || 1);
 
-    this.mesh.uniforms.resolution.value.x = this.renderer.domElement.width;
-    this.mesh.uniforms.resolution.value.y = this.renderer.domElement.height;
+    // **
+    // uniforms.resolution
+    // **
+    this.plane.uniforms.resolution.value.x = this.renderer.domElement.width;
+    this.plane.uniforms.resolution.value.y = this.renderer.domElement.height;
     this.post.uniforms.resolution.value.x = this.renderer.domElement.width;
     this.post.uniforms.resolution.value.y = this.renderer.domElement.height;
+
   }
   mousemove(e) {
     let x = e.clientX * 2.0 - this.winWidth;
@@ -110,21 +112,29 @@ export default class Sample {
     x /= this.winWidth;
     y /= this.winHeight;
 
-    this.mesh.object.position.x = x * -0.1;
-    this.mesh.object.position.y = y * -0.1;
+    this.plane.mesh.position.x = x * -0.1;
+    this.plane.mesh.position.y = y * -0.1;
 
-    this.mesh.uniforms.mouse.value.x = e.pageX;
-    this.mesh.uniforms.mouse.value.y = e.pageY;
+    // **
+    // uniforms.mouse
+    // **
+    this.plane.uniforms.mouse.value.x = e.pageX;
+    this.plane.uniforms.mouse.value.y = e.pageY;
     this.post.uniforms.mouse.value.x = e.pageX;
     this.post.uniforms.mouse.value.y = e.pageY;
   }
   update() {
+
     this.stats.begin();
     this.stats.end();
-    this.count++;
 
-    this.mesh.uniforms.time.value += 0.05;
-    this.post.uniforms.time.value += 0.05;
+    // **
+    // uniforms.time
+    // **
+    this.count += .01;
+    this.count = this.count % 360.;
+    this.plane.uniforms.time.value = this.count;
+    this.post.uniforms.time.value = this.count;
 
     this.renderer.setClearColor(new THREE.Color(0xffffff));
     this.renderer.render(this.scene, this.camera, this.rendererPost);
@@ -132,24 +142,12 @@ export default class Sample {
     this.renderer.render(this.scenePost, this.cameraPost);
     requestAnimationFrame(this.update.bind(this));
   }
-  createMesh() {
-    this.mesh = new Mesh;
-    this.mesh.createObject();
-    this.mesh.object.position.z = -1.0;
-    this.scene.add(this.mesh.object);
+  createPlane() {
+    this.plane = new Plane;
+    this.plane.setup();
+    this.plane.mesh.position.z = -1.0;
+    this.scene.add(this.plane.mesh);
   }
-  // createLight() {
-  //   this.ambient = new THREE.AmbientLight(0xffffff, 0.5);
-  //   this.scene.add(this.ambient);
-  //   this.directional = new THREE.DirectionalLight(0xffffff, 0.8);
-  //   this.directional.position.set(10.0, 10.0, 10.0);
-  //   this.directional.castShadow = true;
-  //   this.directional.shadow.mapSize.width = 1024;
-  //   this.directional.shadow.mapSize.height = 1024;
-  //   this.directional.shadow.camera.near = 0.01;
-  //   this.directional.shadow.camera.far = 500;
-  //   this.scene.add(this.directional);
-  // }
   createPost() {
     this.scenePost = new THREE.Scene();
     this.cameraPost = new THREE.PerspectiveCamera(
@@ -171,12 +169,22 @@ export default class Sample {
       wrapT: THREE.ClampToEdgeWrapping
     });
     this.rendererPost.setSize(this.winWidth * window.devicePixelRatio || 1, this.winHeight * window.devicePixelRatio || 1);
+
     this.post = new Post(this.rendererPost.texture);
-    this.scenePost.add(this.post.object);
+    this.post.setup();
+    this.scenePost.add(this.post.mesh);
+  }
+  stats() {
+    this.stats = new Stats();
+    this.stats.setMode(0);
+    this.stats.domElement.style.position = 'absolute';
+    this.stats.domElement.style.left = '0px';
+    this.stats.domElement.style.top = '0px';
+    document.body.appendChild(this.stats.domElement);
   }
   datGUI () {
 
-    this.gui = new dat.GUI();
+    this.gui = new Dat.GUI();
 
     const postColor = new function() {
       this.r = 1.0;
@@ -198,15 +206,6 @@ export default class Sample {
     });
 
     guiPostColor.open();
-
-  }
-  stats() {
-    this.stats = new Stats();
-    this.stats.setMode(0);
-    this.stats.domElement.style.position = 'absolute';
-    this.stats.domElement.style.left = '0px';
-    this.stats.domElement.style.top = '0px';
-    document.body.appendChild(this.stats.domElement);
   }
   render() {
     this.setup();

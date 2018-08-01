@@ -6,8 +6,8 @@ uniform vec2 resolution;
 uniform vec2 mouse;
 uniform float time;
 uniform sampler2D texture;
-varying vec2 vUv;
 
+varying vec2 vUv;
 varying float vR;
 varying float vG;
 varying float vB;
